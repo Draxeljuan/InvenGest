@@ -59,7 +59,7 @@ public class UsuarioServicio {
                 usuario.getEmail(),
                 usuario.getTelefono(),
                 usuario.getUltimoAcceso(),
-                usuario.getRol(),
+                usuario.getIdRol().getNombre(),
                 usuario.getNombreUsuario()
         );
     }
@@ -69,7 +69,7 @@ public class UsuarioServicio {
         destino.setEmail(origen.getEmail());
         destino.setTelefono(origen.getTelefono());
         destino.setUltimoAcceso(origen.getUltimoAcceso());
-        destino.setRol(origen.getRol());
+        destino.setIdRol(origen.getIdRol());
         destino.setNombreUsuario(origen.getNombreUsuario());
     }
 

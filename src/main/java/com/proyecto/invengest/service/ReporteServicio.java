@@ -47,10 +47,11 @@ public class ReporteServicio {
     private ReporteDTO convertirADTO (Reporte reporte){
         return new ReporteDTO(
                 reporte.getIdReporte(),
-                reporte.getUsuario().getIdUsuario(),
+                reporte.getIdUsuario().getIdUsuario(),
                 reporte.getNombre(),
-                reporte.getTipo(),
+                reporte.getIdTipo(),
                 reporte.getParametros(),
+                reporte.getContenido(),
                 reporte.getFechaCreacion(),
                 reporte.getUltimaEjecucion()
         );

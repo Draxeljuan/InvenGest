@@ -1,6 +1,6 @@
 package com.proyecto.invengest.dto;
 
-import com.proyecto.invengest.entities.Cliente;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,14 +12,13 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class VentaDTO {
-
-    private Integer idVenta;
-    private Integer idUsuario;
+public class FacturaDTO {
+    private int idVenta;
     private LocalDate fecha;
-    private Integer idCliente;
+    private String primerNombreCliente;
+    private String segundoNombreCliente;
+    private String primerApellidoCliente;
+    private String segundoApellidoCliente;
     private BigDecimal total;
-    private List<DetalleVentaDTO> detalles;  // Detalles de la venta
-
+    private List<DetalleFacturaDTO> detalles;
 }

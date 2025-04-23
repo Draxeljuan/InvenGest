@@ -1,18 +1,20 @@
 package com.proyecto.invengest.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-
 @Data
 @AllArgsConstructor
-public class DetalleVentaDTO {
+@NoArgsConstructor
+public class DetalleFacturaDTO {
 
-    private String idProducto; // ID del producto desde la base de datos
+    private String nombreProducto;
+    private int cantidad;
     private BigDecimal precioUnitario;
     private BigDecimal subtotal;
-    private Integer cantidad;
 
 }

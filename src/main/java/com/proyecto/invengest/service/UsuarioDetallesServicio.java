@@ -30,7 +30,8 @@ public class UsuarioDetallesServicio implements UserDetailsService {
         System.out.println("Usuario encontrado: " + usuario.getNombreUsuario());
 
         // Convertimos el rol a ROLE_Administrador o ROLE_Vendedor
-        String rolConPrefijo = "ROLE_" + usuario.getRol().name(); // Esto usará "ROLE_Administrador", etc.
+        String rolConPrefijo = "ROLE_" + usuario.getIdRol().getNombre().toUpperCase(); // Esto usará "ROLE_Administrador", etc.
+        System.out.println(rolConPrefijo);
 
         return User.builder()
                 .username(usuario.getNombreUsuario())

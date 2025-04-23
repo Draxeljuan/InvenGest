@@ -32,11 +32,6 @@ public class AlertaControlador {
         return alertaservicio.obtenerAlerta(id);
     }
 
-    // Crear una nueva alerta
-    @PostMapping
-    public AlertaDTO crearAlerta(@RequestBody Alerta alerta) {
-        return alertaservicio.crearAlerta(alerta);
-    }
 
     // Eliminar una alerta por ID
     @DeleteMapping("/{id}")

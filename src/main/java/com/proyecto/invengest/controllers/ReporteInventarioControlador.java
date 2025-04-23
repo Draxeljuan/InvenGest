@@ -1,15 +1,13 @@
 package com.proyecto.invengest.controllers;
 
 
-import com.proyecto.invengest.dto.ProductoDTO;
-import com.proyecto.invengest.service.ReporteInventarioServicio;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Map;
+import com.proyecto.invengest.service.ReporteInventarioServicio;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.time.LocalDate;
+
 
 @RestController
 @RequestMapping("/reportes/inventario")
@@ -21,22 +19,27 @@ public class ReporteInventarioControlador {
         this.reporteInventarioServicio = reporteInventarioServicio;
     }
 
-    // Reporte por bajo stock
-    @GetMapping("/bajo-stock/{limite}")
-    public List<ProductoDTO> reporteBajoStock(@PathVariable int limite){
-        return reporteInventarioServicio.reporteBajoStock(limite);
-    }
+    // Nuevo endpoint para generar el PDF del reporte general
+    @GetMapping("/generar-pdf")
+    public ResponseEntity<String> generarReporteInventario(
+            @RequestParam String fechaInicio,
+            @RequestParam String fechaFin,
+            @RequestParam(defaultValue = "10") int limiteStock) {
 
-    // Reporte por categoria
-    @GetMapping("/por-categoria")
-    public Map<Integer, List<ProductoDTO>> reportePorCategoria() {
-        return reporteInventarioServicio.reportePorCategoria();
-    }
+        try {
+            // Convertir las fechas de String a LocalDate
+            LocalDate inicio = LocalDate.parse(fechaInicio);
+            LocalDate fin = LocalDate.parse(fechaFin);
 
-    // Reporte Inventario total
-    @GetMapping("/total")
-    public List<ProductoDTO> reporteInventarioTotal(){
-        return reporteInventarioServicio.reporteInventarioTotal();
-    }
+            // Ruta donde se generará el PDF
+            String destino = "ReporteInventario_" + fechaInicio + "_to_" + fechaFin + ".pdf";
 
+            // Generar el reporte en PDF
+            reporteInventarioServicio.generarReporteInventarioGeneral(destino, inicio, fin, limiteStock);
+
+            return ResponseEntity.ok("Reporte PDF generado en: " + destino);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al generar el PDF: " + e.getMessage());
+        }
+    }
 }

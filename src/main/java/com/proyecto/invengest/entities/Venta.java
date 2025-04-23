@@ -2,12 +2,14 @@ package com.proyecto.invengest.entities;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -15,25 +17,29 @@ import java.util.List;
 
 public class Venta {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idVenta;
+    @Column(name = "id_venta", nullable = false)
+    private Integer idVenta;
 
-    @ManyToOne
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_usuario", nullable = false)
-    private Usuario usuario;
+    private Usuario idUsuario;
 
-    @Temporal(TemporalType.DATE)
-    private Date fecha;
+    @Column(name = "fecha")
+    private LocalDate fecha;
 
-    @Column(name = "nombre_cliente")
-    private String nombreCliente;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_cliente", nullable = false)
+    private Cliente idCliente;
 
-    private String apellidoCliente;
-
+    @Column(name = "total", precision = 38, scale = 2)
     private BigDecimal total;
 
-    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<DetalleVenta> detalles;
+    @OneToMany(mappedBy = "idVenta", cascade = CascadeType.ALL)
+    private Set<DetalleVenta> detalleVentas = new LinkedHashSet<>();
 
 }

@@ -37,9 +37,11 @@ public class CategoriaServicio {
     }
 
     // Crear una nueva Categoria
-    public CategoriaDTO crearCategoria(Categoria categoria) {
-        Categoria nuevaCategoria = categoriaRepositorio.save(categoria);
-        return convertirADTO(nuevaCategoria);
+    public CategoriaDTO crearCategoria(CategoriaDTO categoriaDTO) {
+        Categoria nuevaCategoria = convertirAEntidad(categoriaDTO);
+        Categoria categoriaGuardada = categoriaRepositorio.save(nuevaCategoria);
+        return convertirADTO(categoriaGuardada);
+
     }
 
     // Eliminar una Categoria por Id
@@ -51,15 +53,27 @@ public class CategoriaServicio {
     }
 
     // Modificar una Categoria por Id
-    public CategoriaDTO modificarCategoria(@PathVariable int id, @RequestBody Categoria categoria) {
-        Categoria categoriaModificada = categoriaRepositorio.findById(id).orElseThrow(() -> new CategoriaNoEncontradaException("Categoria no encontrada"));
+    public CategoriaDTO modificarCategoria(@PathVariable int id, @RequestBody CategoriaDTO categoriaDTO) {
+        Categoria categoriaExistente = categoriaRepositorio.findById(id)
+                .orElseThrow(() -> new CategoriaNoEncontradaException("Categoria no encontrada con el ID: " + id));
 
-        actualizarCategoria(categoria, categoriaModificada);
+        categoriaExistente.setNombre(categoriaDTO.getNombre());
+        categoriaExistente.setDescripcion(categoriaDTO.getDescripcion());
 
-        return convertirADTO(categoriaRepositorio.save(categoriaModificada));
+        categoriaRepositorio.save(categoriaExistente);
+        return convertirADTO(categoriaExistente);
     }
 
 
+
+    // Convertir CategoriaDTO a Categoria
+    private Categoria convertirAEntidad(CategoriaDTO categoriaDTO) {
+        Categoria categoria = new Categoria();
+        categoria.setNombre(categoriaDTO.getNombre());
+        categoria.setDescripcion(categoriaDTO.getDescripcion());
+        System.out.println("Datos en la entidad antes de guardar: " + categoria);
+        return categoria;
+    }
 
     // Metodo para convertir a DTO
     private CategoriaDTO convertirADTO(Categoria categoria) {

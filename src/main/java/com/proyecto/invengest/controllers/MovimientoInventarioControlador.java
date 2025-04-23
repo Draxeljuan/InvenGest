@@ -4,6 +4,9 @@ package com.proyecto.invengest.controllers;
 import com.proyecto.invengest.dto.MovimientoInventarioDTO;
 import com.proyecto.invengest.entities.MovimientoInventario;
 import com.proyecto.invengest.service.MovimientoInventarioServicio;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,41 +16,35 @@ import java.util.List;
 @RequestMapping("/movimiento")
 public class MovimientoInventarioControlador {
 
-    private final MovimientoInventarioServicio MovimientoInventarioServicio;
+    private final MovimientoInventarioServicio movimientoInventarioServicio;
 
     public MovimientoInventarioControlador(MovimientoInventarioServicio movimientoInventarioServicio) {
-        MovimientoInventarioServicio = movimientoInventarioServicio;
+        this.movimientoInventarioServicio = movimientoInventarioServicio;
     }
 
 
     // Obtener todos los movimientos con DTO
     @GetMapping
     public List<MovimientoInventarioDTO> listarMovimientos() {
-        return MovimientoInventarioServicio.listarMovimientos();
+        return movimientoInventarioServicio.listarMovimientos();
     }
 
     // Obtener movimiento por Id
     @GetMapping("/{id}")
     public MovimientoInventarioDTO obtenerMovimiento(@PathVariable int id) {
-        return MovimientoInventarioServicio.obtenerMovimiento(id);
-    }
-
-    // Crear un nuevo movimiento
-    @PostMapping
-    public MovimientoInventarioDTO crearMovimiento(@RequestBody MovimientoInventario movimientoInventario) {
-        return MovimientoInventarioServicio.crearMovimiento(movimientoInventario);
+        return movimientoInventarioServicio.obtenerMovimiento(id);
     }
 
     // Borrar un movimiento
     @DeleteMapping("/{id}")
     public void eliminarMovimiento(@PathVariable int id) {
-        MovimientoInventarioServicio.eliminarMovimiento(id);
+        movimientoInventarioServicio.eliminarMovimiento(id);
     }
 
     // Modificar un movimiento
     @PutMapping("/{id}")
-    public MovimientoInventarioDTO modificarMovimiento(@PathVariable int id, @RequestBody MovimientoInventario movimientoInventario) {
-        return MovimientoInventarioServicio.modificarMovimiento(id, movimientoInventario);
+    public MovimientoInventarioDTO modificarMovimiento(@PathVariable int id, @RequestBody MovimientoInventarioDTO movimientoInventarioDTO) {
+        return movimientoInventarioServicio.modificarMovimiento(id, movimientoInventarioDTO);
     }
 
 

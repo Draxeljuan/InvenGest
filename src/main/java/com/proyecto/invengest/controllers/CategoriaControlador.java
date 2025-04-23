@@ -4,6 +4,9 @@ package com.proyecto.invengest.controllers;
 import com.proyecto.invengest.dto.CategoriaDTO;
 import com.proyecto.invengest.entities.Categoria;
 import com.proyecto.invengest.service.CategoriaServicio;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,9 +35,11 @@ public class CategoriaControlador {
     }
 
     // Crear una nueva Categoria
-    @PostMapping
-    public CategoriaDTO crearCategoria(Categoria categoria) {
-        return categoriaServicio.crearCategoria(categoria);
+    @PostMapping("/crear")
+    public ResponseEntity<CategoriaDTO> crearCategoria(@RequestBody @Valid CategoriaDTO categoriaDTO) {
+        System.out.println("Datos recibidos: " + categoriaDTO);
+        CategoriaDTO nuevaCategoria = categoriaServicio.crearCategoria(categoriaDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevaCategoria);
     }
 
     // Eliminar una Categoria por id
@@ -45,8 +50,8 @@ public class CategoriaControlador {
 
     // Modificar una Categoria
     @PutMapping("/{id}")
-    public CategoriaDTO modificarCategoria(@PathVariable int id, @RequestBody Categoria categoria) {
-        return categoriaServicio.modificarCategoria(id, categoria);
+    public CategoriaDTO modificarCategoria(@PathVariable int id, @RequestBody CategoriaDTO categoriaDTO) {
+        return categoriaServicio.modificarCategoria(id, categoriaDTO);
     }
 
 

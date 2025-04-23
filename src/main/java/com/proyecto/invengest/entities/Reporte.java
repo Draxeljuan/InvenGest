@@ -1,12 +1,15 @@
 package com.proyecto.invengest.entities;
 
 
-import com.proyecto.invengest.enumeradores.tipoReporte;
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 @Entity
 @Getter
@@ -14,29 +17,40 @@ import java.util.Date;
 
 public class Reporte {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idReporte;
+    @Column(name = "id_reporte", nullable = false)
+    private Integer idReporte;
 
-    @ManyToOne
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_usuario", nullable = false)
-    private Usuario usuario;
+    private Usuario idUsuario;
 
+    @Size(max = 255)
+    @Column(name = "nombre")
     private String nombre;
 
-    @Enumerated(EnumType.STRING)
-    private tipoReporte tipo;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_tipo", nullable = false)
+    private TipoReporte idTipo;
 
 
-    @Column(columnDefinition = "TEXT") // Guardara un JSON con parámetros
+    @Column(name = "parametros")
     private String parametros;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "fecha_creacion")
-    private Date fechaCreacion;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "ultima_ejecucion")
-    private Date ultimaEjecucion;
+    @Column(name = "contenido")
+    private String contenido;
+
+    @NotNull
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDate fechaCreacion;
+
+    @NotNull
+    @Column(name = "ultima_ejecucion", nullable = false)
+    private LocalDate ultimaEjecucion;
 
 }

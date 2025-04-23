@@ -102,6 +102,39 @@ public class GlobalExceptionHandler {
         return response;
     }
 
+    @ExceptionHandler(ClienteNoEncontradoException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, Object> clienteNoEncontradoHandler(ClienteNoEncontradoException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("error", "Cliente no encontrado");
+        response.put("message", ex.getMessage());
+        response.put("status", HttpStatus.NOT_FOUND.value());
+        response.put("timestamp", System.currentTimeMillis());
+        return response;
+    }
+
+    @ExceptionHandler(TipoMovimientoInventarioNoEncontradoException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, Object> TipoMovimientoInventarioNoEncontradoHandler(TipoMovimientoInventarioNoEncontradoException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("error", "Tipo movimiento inventario no encontrado");
+        response.put("message", ex.getMessage());
+        response.put("status", HttpStatus.NOT_FOUND.value());
+        response.put("timestamp", System.currentTimeMillis());
+        return response;
+    }
+
+    @ExceptionHandler(TipoAlertaNoEncontradaException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, Object> TipoAlertaNoEncontradaHandler(TipoAlertaNoEncontradaException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("error", "Tipo alerta inventario no encontrada");
+        response.put("message", ex.getMessage());
+        response.put("status", HttpStatus.NOT_FOUND.value());
+        response.put("timestamp", System.currentTimeMillis());
+        return response;
+    }
+
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, Object> runtimeExceptionHandler(RuntimeException ex) {
@@ -112,5 +145,6 @@ public class GlobalExceptionHandler {
         response.put("timestamp", System.currentTimeMillis());
         return response;
     }
+
 
 }

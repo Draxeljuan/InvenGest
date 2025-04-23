@@ -1,5 +1,5 @@
 package com.proyecto.invengest.enumeradores;
 
-public enum Tipoalerta {
+public enum Tipoalertaant {
     stock_bajo, sin_stock
 }

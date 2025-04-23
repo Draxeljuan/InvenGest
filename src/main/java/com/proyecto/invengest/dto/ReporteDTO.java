@@ -1,10 +1,12 @@
 package com.proyecto.invengest.dto;
 
+import com.proyecto.invengest.entities.TipoReporte;
 import com.proyecto.invengest.enumeradores.tipoReporte;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 @Data
 @AllArgsConstructor
@@ -12,11 +14,12 @@ import java.util.Date;
 public class ReporteDTO {
 
     private int idReporte;
-    private int idUsuario;
+    private int fkUsuario;
     private String nombre;
-    private tipoReporte tipo;
+    private TipoReporte fkTipo;
     private String parametros;
-    private Date fechaCreacion;
-    private Date ultimaEjecucion;
+    private String contenido;
+    private LocalDate fechaCreacion;
+    private LocalDate ultimaEjecucion;
 
 }

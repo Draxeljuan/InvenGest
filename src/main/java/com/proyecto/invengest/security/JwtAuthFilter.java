@@ -6,12 +6,17 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -44,16 +49,30 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             var userDetails = userDetailsService.loadUserByUsername(username);
 
             if (jwtUtils.isTokenValid(token, userDetails)) {
+                // Extraer los roles directamente como lista de String
+                List<String> roles = (List<String>) jwtUtils.extractAllClaims(token).get("roles");
+
+                // Mapear los roles a authorities válidas
+                List<GrantedAuthority> authorities = roles.stream()
+                        .map(role -> (GrantedAuthority) new SimpleGrantedAuthority(role))
+                        .collect(Collectors.toList());
+
+                System.out.println("Autoridades desde token: " + authorities);
+
                 var authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
-                        userDetails.getAuthorities()
+                        authorities
                 );
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+                System.out.println("Usuario autenticado: " + userDetails.getUsername());
+                System.out.println("Roles: " + authorities);
             }
         }
 
         filterChain.doFilter(request, response);
+
+
     }
 }

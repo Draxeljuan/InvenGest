@@ -4,6 +4,7 @@ package com.proyecto.invengest.controllers;
 import com.proyecto.invengest.dto.ProductoDTO;
 import com.proyecto.invengest.entities.Producto;
 import com.proyecto.invengest.service.ProductoServicio;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,9 +34,10 @@ public class ProductoControlador {
     }
 
     // ✅ Crear nuevo producto
-    @PostMapping
-    public ProductoDTO crearProducto(@RequestBody Producto producto) {
-        return productoServicio.crearProducto(producto);
+    @PreAuthorize("hasRole('ADMINISTRADOR')")
+    @PostMapping("/crear")
+    public ProductoDTO crearProducto(@RequestBody ProductoDTO productoDTO) {
+        return productoServicio.crearProducto(productoDTO);
     }
 
     // ✅ Eliminar producto por id
@@ -44,10 +46,9 @@ public class ProductoControlador {
         productoServicio.eliminarProducto(id);
     }
 
-    // Modificar un producto
     @PutMapping("/{id}")
-    public ProductoDTO modificarProducto(@PathVariable String id, @RequestBody Producto producto) {
-        return productoServicio.modificarProducto(id, producto);
+    public ProductoDTO modificarProducto(@PathVariable String id, @RequestBody ProductoDTO productoDTO) {
+        return productoServicio.modificarProducto(id, productoDTO);
     }
 
 

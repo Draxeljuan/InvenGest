@@ -1,10 +1,12 @@
 package com.proyecto.invengest.dto;
 
-import com.proyecto.invengest.enumeradores.Tipoalerta;
+import com.proyecto.invengest.entities.TipoAlerta;
+import com.proyecto.invengest.enumeradores.Tipoalertaant;
 import com.proyecto.invengest.enumeradores.leidaAlerta;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -12,9 +14,10 @@ import java.util.Date;
 public class AlertaDTO {
     private int idAlerta;
     private String idProducto;
-    private Date fecha;
-    private Tipoalerta tipo;
+    private LocalDate fecha;
+    private int tipo;
     private leidaAlerta leida;
+
 
 
 }

@@ -1,13 +1,16 @@
 package com.proyecto.invengest.entities;
 
 
-import com.proyecto.invengest.enumeradores.EstadoProducto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity // Anotacion de Entidad que marca esta clase como una entidad JPA que representa una DB
 @Getter // Metodos Getter y Setter simplificados con una anotacion
@@ -15,31 +18,50 @@ import java.util.Date;
 
 public class Producto {
 
-    @Id // Anotacion para identificar una llave primaria
-    private String idProducto; // Al ser un Varchar en la DB lo dejamos como String
 
-    @ManyToOne // Anotacion que indica Relacion muchos a uno Entre Producto y Categoria
+    @Id
+    @Size(max = 10)
+    @Column(name = "id_producto", nullable = false, length = 10)
+    private String idProducto;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_categoria", nullable = false)
-    // Anotacion que define la columna en la base de datos que se usara como clave foranea
-    // La columna no puede ser null
-    private Categoria categoria;
+    private Categoria idCategoria;
 
+    @Size(max = 255)
+    @Column(name = "nombre")
     private String nombre;
 
+    @Column(name = "precio_venta", precision = 38, scale = 2)
     private BigDecimal precioVenta;
 
+    @Column(name = "costo_compra", precision = 38, scale = 2)
     private BigDecimal costoCompra;
 
-    @Temporal(TemporalType.DATE) // Anotación que indica que el tipo de dato es una Fecha
-    private Date fechaIngreso;
+    @NotNull
+    @Column(name = "fecha_ingreso", nullable = false)
+    private LocalDate fechaIngreso;
 
+    @Column(name = "stock", columnDefinition = "smallint UNSIGNED not null")
     private short stock;
 
+    @Size(max = 255)
+    @Column(name = "ubicacion")
     private String ubicacion;
 
-    @Enumerated(EnumType.STRING) // Anotación que indica que el estado es un ENUM
-    private EstadoProducto estado;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_estado", nullable = false)
+    private EstadoProducto idEstado;
 
+    @OneToMany(mappedBy = "idProducto")
+    private Set<Alerta> alertas = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "idProducto")
+    private Set<DetalleVenta> detalleVentas = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "idProducto")
+    private Set<MovimientoInventario> movimientoInventarios = new LinkedHashSet<>();
 
 }

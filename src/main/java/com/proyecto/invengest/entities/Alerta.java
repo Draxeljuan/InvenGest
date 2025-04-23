@@ -1,13 +1,14 @@
 package com.proyecto.invengest.entities;
 
 
-import com.proyecto.invengest.enumeradores.Tipoalerta;
+
 import com.proyecto.invengest.enumeradores.leidaAlerta;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -15,25 +16,30 @@ import java.util.Date;
 
 public class Alerta {
 
-    @Id // Llave primaria idAlerta
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idAlerta;
+    @Column(name = "id_alerta", nullable = false)
+    private Integer idAlerta;
 
-    @ManyToOne // Relacion muchas alertas a un producto
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_producto", nullable = false)
-    private Producto producto;
+    private Producto idProducto;
 
-    // tipo de dato DATE
-    @Temporal(TemporalType.DATE)
-    private Date fecha;
-    // tipo de dato ENUM
-    @Enumerated(EnumType.STRING)
-    private Tipoalerta tipo;
+    @NotNull
+    @Column(name = "fecha", nullable = false)
+    private LocalDate fecha;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_tipo", nullable = false)
+    private TipoAlerta idTipo;
+
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "leida", nullable = false)
     private leidaAlerta leida;
 
-
-
-
 }
+

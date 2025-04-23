@@ -6,6 +6,9 @@ import com.proyecto.invengest.dto.VentaDTO;
 import com.proyecto.invengest.entities.Venta;
 
 import com.proyecto.invengest.service.VentaServicio;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,9 +39,10 @@ public class VentaControlador {
     }
 
     // Crear una nueva venta con detalles
-    @PostMapping
-    public VentaDTO crearVenta(@RequestBody Venta venta){
-        return ventaServicio.crearVenta(venta);
+    @PostMapping("/crear")
+    public ResponseEntity<VentaDTO> crearVenta(@RequestBody @Valid VentaDTO ventaDTO) {
+        VentaDTO nuevaVenta = ventaServicio.crearVenta(ventaDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevaVenta);
     }
 
     // Eliminar venta por Id
