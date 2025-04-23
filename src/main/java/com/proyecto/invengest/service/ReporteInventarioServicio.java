@@ -115,7 +115,7 @@ public class ReporteInventarioServicio {
                 producto.getFechaIngreso(),
                 producto.getStock(),
                 producto.getUbicacion(),
-                producto.getIdEstado().getIdEstado()
+                producto.getIdEstado().getId()
         );
     }
 }

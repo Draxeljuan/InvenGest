@@ -1,7 +1,6 @@
 package com.proyecto.invengest.dto;
 
 import com.proyecto.invengest.entities.TipoReporte;
-import com.proyecto.invengest.enumeradores.tipoReporte;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

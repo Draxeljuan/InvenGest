@@ -1,13 +1,12 @@
 package com.proyecto.invengest.dto;
 
-import com.proyecto.invengest.entities.TipoAlerta;
-import com.proyecto.invengest.enumeradores.Tipoalertaant;
+
 import com.proyecto.invengest.enumeradores.leidaAlerta;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.Date;
+
 
 @Data
 @AllArgsConstructor

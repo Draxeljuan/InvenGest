@@ -12,7 +12,7 @@ import com.proyecto.invengest.repository.ProductoRepositorio;
 import com.proyecto.invengest.repository.TipoAlertaRepositorio;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 import java.time.LocalDate;
 import java.util.List;
@@ -47,25 +47,6 @@ public class AlertaServicio {
         return convertirADTO(alerta);
     }
 
-    // Crear una nueva alerta
-//    public AlertaDTO crearAlerta(AlertaDTO alertaDTO) {
-//        Alerta alerta = new Alerta();
-//
-//        // Resolver idProducto
-//        alerta.setIdProducto(productoRepositorio.findById(alertaDTO.getIdProducto())
-//                .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + alertaDTO.getIdProducto())));
-//
-//        // Resolver idTipo
-//        alerta.setIdTipo(tipoAlertaRepositorio.findById(alertaDTO.getTipo())
-//                .orElseThrow(() -> new RuntimeException("Tipo de alerta no encontrado con ID: " + alertaDTO.getTipo())));
-//
-//        alerta.setFecha(alertaDTO.getFecha());
-//        alerta.setLeida(alertaDTO.getLeida());
-//
-//        Alerta nuevaAlerta = alertaRepositorio.save(alerta);
-//
-//        return convertirADTO(nuevaAlerta);
-//    }
 
     // Generacion de Alertas
     // Terminar de arreglar para evaluar las alertas correctamente

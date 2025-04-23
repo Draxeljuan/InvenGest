@@ -1,6 +1,5 @@
 package com.proyecto.invengest.dto;
 
-import com.proyecto.invengest.entities.Cliente;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -55,7 +55,7 @@ public class VentaServicio {
     public VentaDTO obtenerVenta(@PathVariable int idVenta){
 
         if(!ventaRepositorio.existsById(idVenta)){
-            throw new VentaNoEncontradaException("Venta no encontrada con el ID: " + idVenta + "");
+            throw new VentaNoEncontradaException("Venta no encontrada con el ID: " + idVenta + " ");
         }
 
         Venta venta  = ventaRepositorio.findVentaConDetalles(idVenta);
@@ -149,7 +149,7 @@ public class VentaServicio {
     // Eliminar una venta
     public void eliminarVenta(@PathVariable int idVenta){
         if(!ventaRepositorio.existsById(idVenta)){
-            throw new VentaNoEncontradaException("Venta no encontrada con el ID: " + idVenta + "");
+            throw new VentaNoEncontradaException("Venta no encontrada con el ID: " + idVenta + " ");
         }
         ventaRepositorio.deleteById(idVenta);
     }

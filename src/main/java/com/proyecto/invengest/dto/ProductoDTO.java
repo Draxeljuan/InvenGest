@@ -1,7 +1,6 @@
 package com.proyecto.invengest.dto;
 
 
-import com.proyecto.invengest.entities.EstadoProducto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

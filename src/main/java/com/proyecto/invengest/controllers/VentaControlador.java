@@ -3,7 +3,6 @@ package com.proyecto.invengest.controllers;
 
 
 import com.proyecto.invengest.dto.VentaDTO;
-import com.proyecto.invengest.entities.Venta;
 
 import com.proyecto.invengest.service.VentaServicio;
 import jakarta.validation.Valid;

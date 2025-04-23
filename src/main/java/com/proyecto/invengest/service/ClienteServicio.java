@@ -3,7 +3,6 @@ package com.proyecto.invengest.service;
 
 import com.proyecto.invengest.dto.ClienteDTO;
 import com.proyecto.invengest.entities.Cliente;
-import com.proyecto.invengest.exceptions.CategoriaNoEncontradaException;
 import com.proyecto.invengest.exceptions.ClienteNoEncontradoException;
 import com.proyecto.invengest.repository.ClienteRepositorio;
 import org.springframework.stereotype.Service;

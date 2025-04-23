@@ -1,6 +1,6 @@
 package com.proyecto.invengest.repository;
 
-import com.proyecto.invengest.dto.ProductoDTO;
+
 import com.proyecto.invengest.entities.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
 

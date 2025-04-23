@@ -1,6 +1,6 @@
 package com.proyecto.invengest.dto;
 
-import com.proyecto.invengest.entities.TipoMovimiento;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

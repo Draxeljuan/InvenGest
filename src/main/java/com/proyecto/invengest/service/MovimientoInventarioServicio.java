@@ -46,31 +46,11 @@ public class MovimientoInventarioServicio {
     // Obtener movimiento por Id
     public MovimientoInventarioDTO obtenerMovimiento(@PathVariable int id) {
         MovimientoInventario movimiento = movimientoInventarioRepositorio.findById(id)
-                .orElseThrow(() -> new MovimientoInventarioNoEncontradoException("Movimiento no encontrado con el ID: " + id + ""));
+                .orElseThrow(() -> new MovimientoInventarioNoEncontradoException("Movimiento no encontrado con el ID: " + id + " "));
         return convertirADTO(movimiento);
     }
 
-    // Crear un nuevo movimiento
-//    public MovimientoInventarioDTO crearMovimiento(MovimientoInventarioDTO movimientoDTO) {
-//        MovimientoInventario movimiento = new MovimientoInventario();
-//
-//        // Resolver producto
-//        Producto producto = productoRepositorio.findById(movimientoDTO.getIdProducto())
-//                .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + movimientoDTO.getIdProducto()));
-//
-//        // Resolver tipo de movimiento
-//        TipoMovimiento tipoMovimiento = tipoMovimientoRepositorio.findById(movimientoDTO.getIdMovimiento())
-//                .orElseThrow(() -> new RuntimeException("Tipo de movimiento no encontrado con ID: " + movimientoDTO.getIdMovimiento()));
-//
-//        movimiento.setIdProducto(producto);
-//        movimiento.setIdMovimiento(tipoMovimiento);
-//        movimiento.setCantidad(movimientoDTO.getCantidad());
-//        movimiento.setFechaMovimiento(LocalDate.now());
-//        movimiento.setObservacion(movimientoDTO.getObservacion());
-//
-//        MovimientoInventario nuevoMovimiento = movimientoInventarioRepositorio.save(movimiento);
-//        return convertirADTO(nuevoMovimiento);
-//    }
+
 
     public void registrarMovimientoInventario(MovimientoInventarioDTO movimientoDTO) {
         MovimientoInventario movimiento = new MovimientoInventario();
@@ -102,7 +82,7 @@ public class MovimientoInventarioServicio {
     // Borrar un movimiento
     public void eliminarMovimiento(@PathVariable int id) {
         if(!movimientoInventarioRepositorio.existsById(id)) {
-            throw new MovimientoInventarioNoEncontradoException("Movimiento no encontrado con el ID: " + id + "");
+            throw new MovimientoInventarioNoEncontradoException("Movimiento no encontrado con el ID: " + id + " ");
         }
         movimientoInventarioRepositorio.deleteById(id);
     }
@@ -111,16 +91,16 @@ public class MovimientoInventarioServicio {
     public MovimientoInventarioDTO modificarMovimiento(@PathVariable int id, @RequestBody MovimientoInventarioDTO movimientoInventarioDTO) {
 
         MovimientoInventario movimientoModificado = movimientoInventarioRepositorio.findById(id)
-                .orElseThrow(() -> new MovimientoInventarioNoEncontradoException("Movimiento no encontrado con el ID: " + id + ""));
+                .orElseThrow(() -> new MovimientoInventarioNoEncontradoException("Movimiento no encontrado con el ID: " + id + " "));
 
         // Mapeamos campos del DTO al producto existente
         movimientoModificado.setIdProducto(productoRepositorio.findById(movimientoInventarioDTO.getIdProducto())
-                .orElseThrow(() -> new ProductoNoEncontradoException("Producto no encontrado con el ID: " + movimientoInventarioDTO.getIdProducto() + "")));
+                .orElseThrow(() -> new ProductoNoEncontradoException("Producto no encontrado con el ID: " + movimientoInventarioDTO.getIdProducto() + " ")));
 
         movimientoModificado.setIdUsuario(usuarioRepositorio.findById(movimientoInventarioDTO.getIdUsuario())
-                .orElseThrow(() -> new UsuarioNoEncontradoException("Usuario no encontrado con el ID: " + movimientoInventarioDTO.getIdUsuario() + "")));
+                .orElseThrow(() -> new UsuarioNoEncontradoException("Usuario no encontrado con el ID: " + movimientoInventarioDTO.getIdUsuario() + " ")));
         movimientoModificado.setIdMovimiento(tipoMovimientoRepositorio.findById(movimientoInventarioDTO.getIdMovimiento())
-                .orElseThrow(() -> new TipoMovimientoInventarioNoEncontradoException("Tipo de movimiento no encontrado con el ID: " + movimientoInventarioDTO.getIdMovimiento() + "")));
+                .orElseThrow(() -> new TipoMovimientoInventarioNoEncontradoException("Tipo de movimiento no encontrado con el ID: " + movimientoInventarioDTO.getIdMovimiento() + " ")));
 
         movimientoModificado.setCantidad(movimientoInventarioDTO.getCantidad());
         movimientoModificado.setFechaMovimiento(movimientoInventarioDTO.getFechaMovimiento());

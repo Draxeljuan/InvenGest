@@ -2,7 +2,6 @@ package com.proyecto.invengest.controllers;
 
 
 import com.proyecto.invengest.dto.AlertaDTO;
-import com.proyecto.invengest.entities.Alerta;
 import com.proyecto.invengest.service.AlertaServicio;
 import org.springframework.web.bind.annotation.*;
 

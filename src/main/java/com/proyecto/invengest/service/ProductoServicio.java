@@ -52,7 +52,7 @@ public class ProductoServicio {
                 .orElseThrow(() -> new ProductoNoEncontradoException("Producto no encontrado con el ID: " + id));
 
         // Verificar si el producto está descontinuado
-        if (producto.getIdEstado().getIdEstado() == 4) {
+        if (producto.getIdEstado().getId() == 4) {
             throw new ProductoNoEncontradoException("El producto con ID " + id + " está descontinuado.");
         }
 
@@ -219,7 +219,7 @@ public class ProductoServicio {
                 producto.getFechaIngreso(),
                 producto.getStock(),
                 producto.getUbicacion(),
-                producto.getIdEstado().getIdEstado()
+                producto.getIdEstado().getId()
 
         );
     }

@@ -2,7 +2,6 @@ package com.proyecto.invengest.controllers;
 
 
 import com.proyecto.invengest.dto.ProductoDTO;
-import com.proyecto.invengest.entities.Producto;
 import com.proyecto.invengest.service.ProductoServicio;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

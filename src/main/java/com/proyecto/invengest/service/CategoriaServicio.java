@@ -84,10 +84,4 @@ public class CategoriaServicio {
         );
     }
 
-    // Metodo para actualizar una Categoria
-    private void actualizarCategoria(Categoria origen, Categoria destino) {
-        destino.setNombre(origen.getNombre());
-        destino.setDescripcion(origen.getDescripcion());
-    }
-
 }

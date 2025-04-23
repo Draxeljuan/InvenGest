@@ -2,7 +2,6 @@ package com.proyecto.invengest.controllers;
 
 
 import com.proyecto.invengest.dto.CategoriaDTO;
-import com.proyecto.invengest.entities.Categoria;
 import com.proyecto.invengest.service.CategoriaServicio;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

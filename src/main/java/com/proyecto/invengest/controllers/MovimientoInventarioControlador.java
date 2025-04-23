@@ -2,11 +2,7 @@ package com.proyecto.invengest.controllers;
 
 
 import com.proyecto.invengest.dto.MovimientoInventarioDTO;
-import com.proyecto.invengest.entities.MovimientoInventario;
 import com.proyecto.invengest.service.MovimientoInventarioServicio;
-import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

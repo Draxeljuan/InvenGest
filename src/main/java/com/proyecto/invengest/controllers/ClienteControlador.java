@@ -1,8 +1,7 @@
 package com.proyecto.invengest.controllers;
 
-import ch.qos.logback.core.net.server.Client;
+
 import com.proyecto.invengest.dto.ClienteDTO;
-import com.proyecto.invengest.entities.Cliente;
 import com.proyecto.invengest.service.ClienteServicio;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

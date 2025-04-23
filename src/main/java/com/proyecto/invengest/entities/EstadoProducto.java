@@ -18,7 +18,7 @@ public class EstadoProducto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_estado", nullable = false)
-    private Integer idEstado;
+    private Integer id;
 
     @Size(max = 20)
     @NotNull
@@ -27,5 +27,6 @@ public class EstadoProducto {
 
     @OneToMany(mappedBy = "idEstado")
     private Set<Producto> productos = new LinkedHashSet<>();
+
 
 }

@@ -1,8 +1,7 @@
 package com.proyecto.invengest.controllers;
 
 
-import com.proyecto.invengest.dto.ProductoMasVendidoDTO;
-import com.proyecto.invengest.dto.VentaDTO;
+
 import com.proyecto.invengest.service.ReporteVentaServicio;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,10 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
+
 
 @RestController
 @RequestMapping("/reportes/venta")

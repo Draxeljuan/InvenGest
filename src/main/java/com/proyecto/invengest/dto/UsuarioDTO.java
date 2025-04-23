@@ -1,11 +1,10 @@
 package com.proyecto.invengest.dto;
 
-import com.proyecto.invengest.entities.RolUsuario;
-import com.proyecto.invengest.enumeradores.rolUsuario;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.sql.Timestamp;
+
 import java.time.Instant;
 
 @Data
