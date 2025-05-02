@@ -35,43 +35,58 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             FilterChain filterChain) throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
+        System.out.println("Encabezado Authorization recibido: " + authHeader); // Verificar qué token se está enviando
 
         String username = null;
         String token = null;
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
-            username = jwtUtils.extractUsername(token);
+            System.out.println("Token extraído: " + token); // Verificar si el token realmente tiene contenido
+
+            try {
+                username = jwtUtils.extractUsername(token);
+            } catch (Exception e) {
+                System.err.println("Error al extraer el username del token: " + e.getMessage());
+            }
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             var userDetails = userDetailsService.loadUserByUsername(username);
 
-            if (jwtUtils.isTokenValid(token, userDetails)) {
-                // Extraer los roles directamente como lista de String
-                List<String> roles = (List<String>) jwtUtils.extractAllClaims(token).get("roles");
+            try {
+                if (jwtUtils.isTokenValid(token, userDetails)) {
+                    // Extraer los roles directamente como lista de String
+                    List<String> roles = (List<String>) jwtUtils.extractAllClaims(token).get("roles");
 
-                // Mapear los roles a authorities válidas
-                List<GrantedAuthority> authorities = roles.stream()
-                        .map(role -> (GrantedAuthority) new SimpleGrantedAuthority(role))
-                        .collect(Collectors.toList());
+                    // Mapear los roles a authorities válidas
+                    List<GrantedAuthority> authorities = roles.stream()
+                            .map(role -> (GrantedAuthority) new SimpleGrantedAuthority(role))
+                            .collect(Collectors.toList());
 
-                System.out.println("Autoridades desde token: " + authorities);
+                    System.out.println("Autoridades desde token: " + authorities);
 
-                var authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        authorities
-                );
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-                System.out.println("Usuario autenticado: " + userDetails.getUsername());
-                System.out.println("Roles: " + authorities);
+                    var authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            authorities
+                    );
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                    System.out.println("Usuario autenticado: " + userDetails.getUsername());
+                    System.out.println("Roles: " + authorities);
+                }
+            } catch (Exception e) {
+                System.err.println("Error al validar el token JWT: " + e.getMessage());
+            }
+        } else {
+            if (username == null) {
+                System.err.println("Error: No se pudo extraer el username del token.");
+            } else {
+                System.err.println("Error: Ya existe una autenticación en el contexto de seguridad.");
             }
         }
-
+        System.out.println("Encabezado Authorization recibido: " + request.getHeader("Authorization"));
         filterChain.doFilter(request, response);
-
-
     }
 }

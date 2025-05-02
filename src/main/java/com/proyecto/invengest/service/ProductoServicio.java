@@ -3,6 +3,7 @@ package com.proyecto.invengest.service;
 
 import com.proyecto.invengest.dto.MovimientoInventarioDTO;
 import com.proyecto.invengest.dto.ProductoDTO;
+import com.proyecto.invengest.entities.EstadoProducto;
 import com.proyecto.invengest.entities.Producto;
 import com.proyecto.invengest.exceptions.ProductoNoEncontradoException;
 import com.proyecto.invengest.repository.*;
@@ -78,51 +79,50 @@ public class ProductoServicio {
             producto.setStock(productoDTO.getStock());
             producto.setUbicacion(productoDTO.getUbicacion());
 
-            // Resolver entidades relacionadas (Categoría y Estado)
+            // Resolver categoría
             producto.setIdCategoria(categoriaRepositorio.findById(productoDTO.getIdCategoria())
                     .orElseThrow(() -> new RuntimeException("Categoría no encontrada: " + productoDTO.getIdCategoria())));
-            producto.setIdEstado(estadoProductoRepositorio.findById(productoDTO.getIdEstado())
-                    .orElseThrow(() -> new RuntimeException("Estado no encontrado: " + productoDTO.getIdEstado())));
 
-            // Guardar el producto en la base de datos
-            Producto productoGuardado;
-            try {
-                productoGuardado = productoRepositorio.save(producto);
-            } catch (TransactionSystemException ex) {
-                // Manejar errores de transacción y registrar la causa raíz
-                if (ex.getRootCause() != null) {
-                    ex.printStackTrace();
-                    System.err.println("Causa raíz de TransactionSystemException: " + ex.getRootCause().getMessage());
-                }
-                throw ex;
-            }
+            // Asignar estado automáticamente según stock
+            producto.setIdEstado(determinarEstadoProducto(productoDTO.getStock()));
+
+            // Guardar producto
+            Producto productoGuardado = productoRepositorio.save(producto);
 
             // **Registrar el movimiento de inventario automáticamente**
             MovimientoInventarioDTO movimientoDTO = new MovimientoInventarioDTO(
-                    null, // ID se genera automáticamente
+                    null,
                     productoGuardado.getIdProducto(),
-                    1, // ID del usuario admin (porque solo el admin puede crear productos)
-                    1, // ID del tipo de movimiento "Entrada"
+                    1, // ID del usuario admin
+                    1, // Tipo de movimiento "Entrada"
                     productoGuardado.getStock(),
                     LocalDate.now(),
                     "Registro de nuevo producto: " + productoGuardado.getNombre()
             );
 
-            // Llamar al método para registrar el movimiento
             movimientoInventarioServicio.registrarMovimientoInventario(movimientoDTO);
 
-            // Convertir el producto guardado a DTO y devolverlo
             return convertirADTO(productoGuardado);
 
-        } catch (RuntimeException ex) {
-            // Manejo de errores específicos de runtime
-            System.err.println("Error durante la creación del producto: " + ex.getMessage());
-            throw ex;
         } catch (Exception ex) {
-            // Manejo general de excepciones
-            System.err.println("Error inesperado durante la creación del producto: " + ex.getMessage());
-            throw new RuntimeException("Ocurrió un error inesperado al crear el producto.", ex);
+            System.err.println("Error inesperado al crear el producto: " + ex.getMessage());
+            throw new RuntimeException("Ocurrió un error al crear el producto.", ex);
         }
+    }
+
+    // Metodo para determinar el estado del producto según el stock
+    private EstadoProducto determinarEstadoProducto(int stock) {
+        int estadoId;
+        if (stock > 10) {
+            estadoId = 1; // Estado "Normal"
+        } else if (stock > 0) {
+            estadoId = 2; // Estado "Bajo"
+        } else {
+            estadoId = 3; // Estado "Sin Stock"
+        }
+
+        return estadoProductoRepositorio.findById(estadoId)
+                .orElseThrow(() -> new RuntimeException("Estado de producto no encontrado con ID: " + estadoId));
     }
 
     // Metodo para generar un identificador unico

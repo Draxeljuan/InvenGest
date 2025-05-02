@@ -36,6 +36,7 @@ public interface VentaRepositorio extends JpaRepository<Venta, Integer> {
                                   @Param("fechaFin") Date fechaFin);
 
     // Verifica si existe alguna venta asociada al producto
-    boolean existsByIdProducto(String idProducto);
+//    @Query("SELECT CASE WHEN COUNT(d) > 0 THEN TRUE ELSE FALSE END FROM DetalleVenta d WHERE d.idProducto.idProducto = :idProducto")
+//    boolean existsByIdProducto(@Param("idProducto") String idProducto);
 
 }

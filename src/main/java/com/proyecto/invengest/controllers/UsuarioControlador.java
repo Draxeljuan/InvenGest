@@ -4,6 +4,7 @@ package com.proyecto.invengest.controllers;
 import com.proyecto.invengest.dto.UsuarioDTO;
 import com.proyecto.invengest.entities.Usuario;
 import com.proyecto.invengest.service.UsuarioServicio;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,6 +38,7 @@ public class UsuarioControlador {
     public UsuarioDTO actualizarUsuario(@PathVariable int id, @RequestBody Usuario usuario) {
         return usuarioServicio.actualizarUsuario(id, usuario);
     }
+
 
 
 
