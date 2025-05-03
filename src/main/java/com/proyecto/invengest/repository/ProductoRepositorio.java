@@ -11,4 +11,6 @@ import java.util.List;
 public interface ProductoRepositorio extends JpaRepository<Producto, String> {
     @Query("SELECT p FROM Producto p WHERE p.idEstado.id <> :idEstado")
     List<Producto> findAllByIdEstadoNot(@Param("idEstado") int idEstado);
+
+    List<Producto> findByNombreContainingIgnoreCase(String nombre);
 }

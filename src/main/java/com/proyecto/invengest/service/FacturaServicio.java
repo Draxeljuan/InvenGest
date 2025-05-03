@@ -26,26 +26,35 @@ public class FacturaServicio {
 
     // Metodo para generar FacturaDTO desde una venta
     public FacturaDTO generarFacturaDesdeVenta(int idVenta) {
+        System.out.println("🔍 Buscando venta con ID: " + idVenta);
         Venta venta = ventaRepositorio.findVentaConDetalles(idVenta);
 
         if (venta == null) {
+            System.out.println("⚠️ Error: Venta no encontrada con el ID: " + idVenta);
             throw new RuntimeException("Venta no encontrada con el ID: " + idVenta);
         }
 
+        System.out.println("✅ Venta encontrada: " + venta.toString());
+
         List<DetalleFacturaDTO> detallesDTO = venta.getDetalleVentas()
                 .stream()
-                .map(detalle -> new DetalleFacturaDTO(
-                        detalle.getIdProducto().getNombre(),
-                        detalle.getCantidad(),
-                        detalle.getPrecioUnitario(),
-                        detalle.getSubtotal()
-                ))
+                .map(detalle -> {
+                    System.out.println("🛒 Producto en factura: " + detalle.getIdProducto().getNombre());
+                    return new DetalleFacturaDTO(
+                            detalle.getIdProducto().getNombre(),
+                            detalle.getCantidad(),
+                            detalle.getPrecioUnitario(),
+                            detalle.getSubtotal()
+                    );
+                })
                 .collect(Collectors.toList());
+
+        System.out.println("✅ Factura generada para venta ID: " + idVenta);
 
         return new FacturaDTO(
                 venta.getIdVenta(),
                 venta.getFecha(),
-                venta.getIdCliente().getPrimerNombre(), // Adaptar si necesitas otro campo para el cliente
+                venta.getIdCliente().getPrimerNombre(),
                 venta.getIdCliente().getSegundoNombre(),
                 venta.getIdCliente().getPrimerApellido(),
                 venta.getIdCliente().getSegundoApellido(),
@@ -56,6 +65,13 @@ public class FacturaServicio {
 
     // Metodo para generar la factura en PDF
     public byte[] generarFacturaPDF(FacturaDTO factura) {
+        System.out.println("📄 Generando factura PDF para venta ID: " + factura.getIdVenta());
+
+        if (factura == null) {
+            System.out.println("⚠️ Error: FacturaDTO es null, no se puede generar el PDF.");
+            throw new RuntimeException("FacturaDTO es null para la venta ID: " + factura.getIdVenta());
+        }
+
         Document document = new Document();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -67,6 +83,7 @@ public class FacturaServicio {
             document.add(new Paragraph("Factura"));
             document.add(new Paragraph("ID Venta: " + factura.getIdVenta()));
             document.add(new Paragraph("Fecha: " + factura.getFecha()));
+
             String nombreCliente = factura.getPrimerNombreCliente() +
                     (factura.getSegundoNombreCliente() != null ? " " + factura.getSegundoNombreCliente() : "") +
                     (factura.getPrimerApellidoCliente() != null ? " " + factura.getPrimerApellidoCliente() : "") +
@@ -74,9 +91,9 @@ public class FacturaServicio {
             document.add(new Paragraph("Cliente: " + nombreCliente));
             document.add(new Paragraph("---------------------------------------------------"));
 
-            // Detalles de la factura
-            document.add(new Paragraph("Detalles de la compra:"));
+            System.out.println("🛒 Añadiendo detalles de la compra:");
             for (DetalleFacturaDTO detalle : factura.getDetalles()) {
+                System.out.println("🔹 Producto: " + detalle.getNombreProducto() + " | Cantidad: " + detalle.getCantidad());
                 document.add(new Paragraph("Producto: " + detalle.getNombreProducto()));
                 document.add(new Paragraph("Cantidad: " + detalle.getCantidad()));
                 document.add(new Paragraph("Precio unitario: $" + detalle.getPrecioUnitario()));
@@ -84,16 +101,18 @@ public class FacturaServicio {
                 document.add(new Paragraph("------------------------------"));
             }
 
-            // Total de la factura
             document.add(new Paragraph("Total: $" + factura.getTotal()));
             document.add(new Paragraph("---------------------------------------------------"));
 
             document.close();
 
+            System.out.println("✅ PDF generado correctamente para venta ID: " + factura.getIdVenta());
+
             return outputStream.toByteArray();
 
         } catch (DocumentException e) {
-            throw new RuntimeException("Error al generar la factura PDF con el ID" + factura.getIdVenta(), e);
+            System.out.println("⚠️ Error al generar el PDF para venta ID: " + factura.getIdVenta());
+            throw new RuntimeException("Error al generar la factura PDF con el ID " + factura.getIdVenta(), e);
         }
     }
 }

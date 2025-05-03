@@ -7,11 +7,8 @@ import com.proyecto.invengest.entities.EstadoProducto;
 import com.proyecto.invengest.entities.Producto;
 import com.proyecto.invengest.exceptions.ProductoNoEncontradoException;
 import com.proyecto.invengest.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -58,6 +55,14 @@ public class ProductoServicio {
         }
 
         return convertirADTO(producto);
+    }
+
+    // Consultar producto por nombre
+    public List<ProductoDTO> buscarPorNombre(String nombre) {
+        return productoRepositorio.findByNombreContainingIgnoreCase(nombre)
+                .stream()
+                .map(this::convertirADTO)
+                .collect(Collectors.toList());
     }
 
     // Crear un nuevo producto
@@ -136,7 +141,7 @@ public class ProductoServicio {
     }
 
     // Eliminar producto por Id
-    public void eliminarProducto(@PathVariable String id) {
+    public void descontinuarProducto(@PathVariable String id) {
         // Verificar si el producto existe
         Producto productoEliminado = productoRepositorio.findById(id)
                 .orElseThrow(() -> new ProductoNoEncontradoException("Producto no encontrado con el ID: " + id));
@@ -167,8 +172,9 @@ public class ProductoServicio {
         Producto productoModificado = productoRepositorio.findById(id)
                 .orElseThrow(() -> new ProductoNoEncontradoException("Producto no encontrado"));
 
-        // Guarda valores del stock por si llega a ser modificado
+        // Guarda valores del stock y estado anteriores
         int stockAnterior = productoModificado.getStock();
+        int estadoAnterior = productoModificado.getIdEstado().getId();
 
         // Mapear campos básicos del DTO al producto existente
         productoModificado.setNombre(productoDTO.getNombre());
@@ -178,11 +184,13 @@ public class ProductoServicio {
         productoModificado.setStock(productoDTO.getStock());
         productoModificado.setUbicacion(productoDTO.getUbicacion());
 
-        // Resolver entidades relacionadas (Categoria y Estado) desde los repositorios
+        // Resolver categoría desde el repositorio
         productoModificado.setIdCategoria(categoriaRepositorio.findById(productoDTO.getIdCategoria())
                 .orElseThrow(() -> new RuntimeException("Categoría no encontrada con ID: " + productoDTO.getIdCategoria())));
-        productoModificado.setIdEstado(estadoProductoRepositorio.findById(productoDTO.getIdEstado())
-                .orElseThrow(() -> new RuntimeException("Estado no encontrado con ID: " + productoDTO.getIdEstado())));
+
+        // Ajuste automático del estado según stock
+        EstadoProducto nuevoEstado = determinarEstadoProducto(productoDTO.getStock());
+        productoModificado.setIdEstado(nuevoEstado);
 
         // Guardar el producto actualizado en la base de datos
         Producto productoGuardado = productoRepositorio.save(productoModificado);
@@ -196,13 +204,15 @@ public class ProductoServicio {
                     3,
                     productoGuardado.getStock(),
                     LocalDate.now(),
-                    "Modificacion de producto. Stock anterior: " + stockAnterior + ", nuevo stock: " + productoGuardado.getStock()
-
+                    "Modificación de producto. Stock anterior: " + stockAnterior + ", nuevo stock: " + productoGuardado.getStock()
             );
             movimientoInventarioServicio.registrarMovimientoInventario(movimientoDTO);
         }
 
-
+        // Registrar cambio de estado solo si se modificó
+        if (nuevoEstado.getId() != estadoAnterior) {
+            System.out.println("Cambio de estado: de " + estadoAnterior + " a " + nuevoEstado.getId());
+        }
 
         // Convertir el producto actualizado a un DTO y devolverlo
         return convertirADTO(productoGuardado);

@@ -20,29 +20,35 @@ public class ProductoControlador {
     }
 
 
-    // ✅ Obtener lista de productos con DTO
+    // Obtener lista de productos con DTO
     @GetMapping
     public List<ProductoDTO> listarProductos() {
         return productoServicio.listarProductos();
     }
 
-    // ✅ Obtener producto por id con DTO
+    // Obtener producto por id con DTO
     @GetMapping("/{id}")
     public ProductoDTO obtenerProducto(@PathVariable String id) {
         return productoServicio.obtenerProducto(id);
     }
 
-    // ✅ Crear nuevo producto
+    // Obtener producto por nombre
+    @GetMapping("/buscar")
+    public List<ProductoDTO> buscarProductos(@RequestParam String nombre) {
+        return productoServicio.buscarPorNombre(nombre);
+    }
+
+    // Crear nuevo producto
     @PreAuthorize("hasRole('ADMINISTRADOR')")
     @PostMapping("/crear")
     public ProductoDTO crearProducto(@RequestBody ProductoDTO productoDTO) {
         return productoServicio.crearProducto(productoDTO);
     }
 
-    // ✅ Eliminar producto por id
-    @DeleteMapping("/{id}")
-    public void eliminarProducto(@PathVariable String id) {
-        productoServicio.eliminarProducto(id);
+    // Eliminar producto por id
+    @PutMapping("/descontinuar/{id}")
+    public void descontinuarProducto(@PathVariable String id) {
+        productoServicio.descontinuarProducto(id);
     }
 
     @PutMapping("/{id}")

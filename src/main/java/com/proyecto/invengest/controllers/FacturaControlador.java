@@ -23,6 +23,8 @@ public class FacturaControlador {
     // Endpoint para generar y descargar factura en PDF
     @GetMapping("/{idVenta}/generar-pdf")
     public ResponseEntity<byte[]> generarFactura(@PathVariable int idVenta) {
+
+        System.out.println("Generando factura con el ID de Venta: " + idVenta);
         try {
             //  Generar la FacturaDTO desde la venta
             FacturaDTO factura = facturaServicio.generarFacturaDesdeVenta(idVenta);
