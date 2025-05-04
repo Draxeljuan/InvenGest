@@ -49,7 +49,7 @@ public class ReporteServicio {
                 reporte.getIdReporte(),
                 reporte.getIdUsuario().getIdUsuario(),
                 reporte.getNombre(),
-                reporte.getIdTipo(),
+                reporte.getIdTipo().getIdTipo(),
                 reporte.getParametros(),
                 reporte.getContenido(),
                 reporte.getFechaCreacion(),

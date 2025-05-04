@@ -3,9 +3,11 @@ package com.proyecto.invengest.controllers;
 
 import com.proyecto.invengest.dto.AlertaDTO;
 import com.proyecto.invengest.service.AlertaServicio;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -25,12 +27,23 @@ public class AlertaControlador {
         return alertaservicio.listarAlertas();
     }
 
+    @GetMapping("/con-producto")
+    public List<Map<String, Object>> listarAlertasConProducto() {
+        return alertaservicio.listarAlertasConProducto();
+    }
+
     // Obtener una alerta por su ID
     @GetMapping("/{id}")
     public AlertaDTO obtenerAlerta(@PathVariable int id) {
         return alertaservicio.obtenerAlerta(id);
     }
 
+    // Eliminar Alertas Innecesarias
+    @DeleteMapping("/limpiar")
+    public ResponseEntity<String> limpiarAlertasInnecesarias() {
+        alertaservicio.limpiarAlertasInnecesarias();
+        return ResponseEntity.ok("Alertas innecesarias limpiadas correctamente");
+    }
 
     // Eliminar una alerta por ID
     @DeleteMapping("/{id}")

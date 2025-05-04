@@ -1,6 +1,7 @@
 package com.proyecto.invengest.service;
 
 import com.proyecto.invengest.dto.AlertaDTO;
+import com.proyecto.invengest.dto.ProductoDTO;
 import com.proyecto.invengest.entities.Alerta;
 import com.proyecto.invengest.entities.Producto;
 import com.proyecto.invengest.entities.TipoAlerta;
@@ -15,8 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,8 +36,49 @@ public class AlertaServicio {
     public List<AlertaDTO> listarAlertas() {
         return alertaRepositorio.findAll()
                 .stream()
+                .filter(alerta -> alerta.getIdProducto().getStock() < 10)
                 .map(this::convertirADTO)
                 .collect(Collectors.toList());
+
+
+    }
+
+    public List<Map<String, Object>> listarAlertasConProducto() {
+        List<Alerta> alertas = alertaRepositorio.findAll()
+                .stream()
+                .filter(alerta -> alerta.getIdProducto().getStock() < 10)
+                .collect(Collectors.toList());
+
+        List<Map<String, Object>> alertasConProducto = new ArrayList<>();
+
+        for (Alerta alerta : alertas) {
+            Map<String, Object> alertaMap = new HashMap<>();
+            alertaMap.put("idAlerta", alerta.getIdAlerta());
+            alertaMap.put("idProducto", alerta.getIdProducto().getIdProducto());
+            alertaMap.put("nombreProducto", alerta.getIdProducto().getNombre()); // Agregar nombre sin modificar DTO
+            alertaMap.put("fecha", alerta.getFecha());
+            alertaMap.put("idTipo", alerta.getIdTipo().getIdTipo());
+            alertaMap.put("leida", alerta.getLeida());
+
+            alertasConProducto.add(alertaMap);
+        }
+
+        return alertasConProducto;
+    }
+
+    public void limpiarAlertasInnecesarias() {
+        List<Alerta> alertas = alertaRepositorio.findAll();
+
+        for (Alerta alerta : alertas) {
+            Producto producto = productoRepositorio.obtenerProductoPorId(alerta.getIdProducto().getIdProducto()).orElse(null);
+
+            if (producto != null) {
+                if (Objects.equals(producto.getIdEstado(), 4) || producto.getStock() >= 10) {
+                    System.out.println("✅ Eliminando alerta ID: " + alerta.getIdAlerta() + " porque el producto está descontinuado o tiene suficiente stock");
+                    alertaRepositorio.deleteById(alerta.getIdAlerta());
+                }
+            }
+        }
     }
 
     // Obtener alertas con Id

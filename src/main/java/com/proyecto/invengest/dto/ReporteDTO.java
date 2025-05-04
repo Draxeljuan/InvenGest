@@ -13,9 +13,9 @@ import java.time.LocalDate;
 public class ReporteDTO {
 
     private int idReporte;
-    private int fkUsuario;
+    private int idUsuario;
     private String nombre;
-    private TipoReporte fkTipo;
+    private int idTipo;
     private String parametros;
     private String contenido;
     private LocalDate fechaCreacion;
