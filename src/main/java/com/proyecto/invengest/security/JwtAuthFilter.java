@@ -1,6 +1,6 @@
 package com.proyecto.invengest.security;
 
-import com.proyecto.invengest.service.UsuarioDetallesServicio;
+import com.proyecto.invengest.service.autenticacion.UsuarioDetallesServicio;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
