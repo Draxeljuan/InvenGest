@@ -3,10 +3,14 @@ package com.proyecto.invengest.service.autenticacion;
 
 import com.proyecto.invengest.dto.UsuarioDTO;
 import com.proyecto.invengest.entities.Usuario;
+import com.proyecto.invengest.exceptions.ApiException;
 import com.proyecto.invengest.exceptions.UsuarioNoEncontradoException;
 import com.proyecto.invengest.repository.UsuarioRepositorio;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionTimedOutException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -37,9 +41,15 @@ public class UsuarioServicio {
     }
 
     public UsuarioDTO obtenerUsuario(@PathVariable int id) {
-        Usuario usuario = usuarioRepositorio.findById(id)
-                .orElseThrow(() -> new UsuarioNoEncontradoException("Usuario no encontrado con el ID: " + id));
-        return convertirADTO(usuario);
+        try {
+            Usuario usuario = usuarioRepositorio.findById(id)
+                    .orElseThrow(() -> new UsuarioNoEncontradoException("Usuario no encontrado con el ID: " + id));
+            return convertirADTO(usuario);
+        } catch (TransactionTimedOutException e) {  // Capturar si la consulta supera el tiempo de espera
+            throw new ApiException(4081, "⚠ La base de datos está bloqueada o no responde.", HttpStatus.REQUEST_TIMEOUT);
+        } catch (DataAccessException e) {
+            throw new ApiException(5001, "⚠ Error de conexión con la base de datos.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     public UsuarioDTO actualizarUsuario(@PathVariable int id, @RequestBody Usuario usuario) {
