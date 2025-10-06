@@ -1,0 +1,50 @@
+
+services:
+  invengest-api-spring:
+    image: invengest-api-spring
+    container_name: invengest-api-container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - spring-network
+    depends_on:
+      - mysql
+
+  invengest-angular:
+    image: invengest-angular
+    container_name: invengest-angular-container
+    build:
+      context: C:/Users/USER/Desktop/Proyecto FrontEnd
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    networks:
+      - spring-network
+    depends_on:
+      - invengest-api-spring
+
+  mysql:
+    image: mysql
+    container_name: mysql_database
+    environment:
+      MYSQL_ROOT_PASSWORD: 4352
+      MYSQL_DATABASE: invengest
+      MYSQL_USER: draxel
+      MYSQL_PASSWORD: 1479
+
+    ports:
+      - "3307:3306"
+    networks:
+      - spring-network
+    volumes:
+      - mysql-volume:/var/lib/mysql
+      - C:/Users/USER/Desktop/BD_invengest/invengest.sql:/docker-entrypoint-initdb.d/init.sql
+
+
+networks:
+  spring-network:
+volumes:
+  mysql-volume:
