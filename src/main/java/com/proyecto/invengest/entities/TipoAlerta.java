@@ -2,8 +2,7 @@ package com.proyecto.invengest.entities;
 
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -11,6 +10,10 @@ import java.util.Set;
 @Entity
 @Setter
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+
 public class TipoAlerta {
 
 

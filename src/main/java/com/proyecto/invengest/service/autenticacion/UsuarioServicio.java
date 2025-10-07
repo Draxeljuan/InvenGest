@@ -52,6 +52,8 @@ public class UsuarioServicio {
         }
     }
 
+
+    // CAMBIOS EN USUARIOS EXCEPCION DATABASE BLOQUEDA
     public UsuarioDTO actualizarUsuario(@PathVariable int id, @RequestBody Usuario usuario) {
         Usuario usuarioActualizado = usuarioRepositorio.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));

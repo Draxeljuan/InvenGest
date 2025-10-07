@@ -26,20 +26,20 @@ public class FacturaServicio {
 
     // Metodo para generar FacturaDTO desde una venta
     public FacturaDTO generarFacturaDesdeVenta(int idVenta) {
-        System.out.println("🔍 Buscando venta con ID: " + idVenta);
+        System.out.println("Buscando venta con ID: " + idVenta);
         Venta venta = ventaRepositorio.findVentaConDetalles(idVenta);
 
         if (venta == null) {
-            System.out.println("⚠️ Error: Venta no encontrada con el ID: " + idVenta);
+            System.out.println("Error: Venta no encontrada con el ID: " + idVenta);
             throw new RuntimeException("Venta no encontrada con el ID: " + idVenta);
         }
 
-        System.out.println("✅ Venta encontrada: " + venta.toString());
+        System.out.println("Venta encontrada: " + venta.toString());
 
         List<DetalleFacturaDTO> detallesDTO = venta.getDetalleVentas()
                 .stream()
                 .map(detalle -> {
-                    System.out.println("🛒 Producto en factura: " + detalle.getIdProducto().getNombre());
+                    System.out.println("Producto en factura: " + detalle.getIdProducto().getNombre());
                     return new DetalleFacturaDTO(
                             detalle.getIdProducto().getNombre(),
                             detalle.getCantidad(),
@@ -49,7 +49,7 @@ public class FacturaServicio {
                 })
                 .collect(Collectors.toList());
 
-        System.out.println("✅ Factura generada para venta ID: " + idVenta);
+        System.out.println("Factura generada para venta ID: " + idVenta);
 
         return new FacturaDTO(
                 venta.getIdVenta(),
@@ -65,7 +65,7 @@ public class FacturaServicio {
 
     // Metodo para generar la factura en PDF
     public byte[] generarFacturaPDF(FacturaDTO factura) {
-        System.out.println("📄 Generando factura PDF para venta ID: " + factura.getIdVenta());
+        System.out.println("Generando factura PDF para venta ID: " + factura.getIdVenta());
 
         if (factura == null) {
             System.out.println(" Error: FacturaDTO es null, no se puede generar el PDF.");

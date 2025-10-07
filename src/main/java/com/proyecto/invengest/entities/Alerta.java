@@ -5,14 +5,16 @@ package com.proyecto.invengest.entities;
 import com.proyecto.invengest.enumeradores.leidaAlerta;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 
 public class Alerta {
 

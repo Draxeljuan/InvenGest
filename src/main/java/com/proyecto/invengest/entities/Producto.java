@@ -4,8 +4,7 @@ package com.proyecto.invengest.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,6 +14,9 @@ import java.util.Set;
 @Entity // Anotacion de Entidad que marca esta clase como una entidad JPA que representa una DB
 @Getter // Metodos Getter y Setter simplificados con una anotacion
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 
 public class Producto {
 
@@ -43,7 +45,7 @@ public class Producto {
     @Column(name = "fecha_ingreso", nullable = false)
     private LocalDate fechaIngreso;
 
-    @Column(name = "stock", columnDefinition = "smallint UNSIGNED not null")
+    @Column(name = "stock", nullable = false)
     private short stock;
 
     @Size(max = 255)

@@ -20,11 +20,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class MovimientoInventarioServicio {
+    public class MovimientoInventarioServicio {
 
-    private final MovimientoInventarioRepositorio movimientoInventarioRepositorio;
-    private final ProductoRepositorio productoRepositorio;
-    private final TipoMovimientoRepositorio tipoMovimientoRepositorio;
+        private final MovimientoInventarioRepositorio movimientoInventarioRepositorio;
+        private final ProductoRepositorio productoRepositorio;
+        private final TipoMovimientoRepositorio tipoMovimientoRepositorio;
 
     private final UsuarioRepositorio usuarioRepositorio;
 

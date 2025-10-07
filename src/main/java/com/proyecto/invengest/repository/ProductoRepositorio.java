@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductoRepositorio extends JpaRepository<Producto, String> {
+
+    // Retorna todos los productos que tengan un estado diferente al proporcionado
     @Query("SELECT p FROM Producto p WHERE p.idEstado.id <> :idEstado")
     List<Producto> findAllByIdEstadoNot(@Param("idEstado") int idEstado);
 
