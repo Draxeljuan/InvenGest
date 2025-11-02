@@ -80,7 +80,7 @@ class MovimientoInventarioControladorTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
-    public void eliminarMovimiento() throws Exception{
+    public void modificarMovimiento() throws Exception{
         when(movimientoInventarioServicio.modificarMovimiento(eq(1), any(MovimientoInventarioDTO.class)))
                 .thenReturn(movimientoDTO);
 
@@ -111,10 +111,12 @@ class MovimientoInventarioControladorTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
-    public void modificarMovimiento() throws Exception {
+    public void eliminarMovimiento() throws Exception {
         doNothing().when(movimientoInventarioServicio).eliminarMovimiento(1);
 
         mockMvc.perform(delete("/movimiento/1"))
                 .andExpect(status().isOk());
     }
+
+
 }

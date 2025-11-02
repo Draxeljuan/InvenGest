@@ -59,7 +59,6 @@ class ProductoControladorTest {
                 .andExpect(jsonPath("$[0].precioVenta").value(85000))
                 .andExpect(jsonPath("$[0].stock").value(25));
     }
-
     @Test
     @WithMockUser(username = "admin", roles = {"ADMINISTRADOR"})
     public void obtenerProducto() throws Exception {

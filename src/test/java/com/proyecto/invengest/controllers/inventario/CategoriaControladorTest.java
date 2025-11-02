@@ -61,7 +61,6 @@ class CategoriaControladorTest {
                 .andExpect(jsonPath("$[0].descripcion").value("Dispositivos y accesorios tecnológicos"));
 
     }
-
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void obtenerCategoria() throws Exception {

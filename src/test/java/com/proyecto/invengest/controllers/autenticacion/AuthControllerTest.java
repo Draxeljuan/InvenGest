@@ -69,7 +69,6 @@ class AuthControllerTest {
         // Arrange: Configurar el comportamiento de los mocks
         String expectedToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test.token";
 
-
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(authentication);
 

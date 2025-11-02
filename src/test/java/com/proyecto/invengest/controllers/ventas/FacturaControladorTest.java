@@ -54,7 +54,6 @@ class FacturaControladorTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PDF))
                 .andExpect(content().bytes("PDF simulado".getBytes()));
     }
-
     @Test
     @WithMockUser(username = "admin", roles = {"ADMINISTRADOR"})
     void generarFacturaSiVentaNoExiste() throws Exception {

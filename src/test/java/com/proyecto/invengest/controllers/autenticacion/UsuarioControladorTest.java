@@ -89,7 +89,6 @@ class UsuarioControladorTest {
                 .andExpect(jsonPath("$[0].nombre").value("Juan Pérez"))
                 .andExpect(jsonPath("$[0].email").value("juan@example.com"));
     }
-
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void obtenerUsuario() throws Exception {

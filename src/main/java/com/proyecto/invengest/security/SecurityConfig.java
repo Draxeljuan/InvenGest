@@ -40,6 +40,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/login", "/public/**").permitAll()
                         .requestMatchers("/usuario/**").authenticated()
                         .requestMatchers("/inventario/**").hasAuthority("ROLE_ADMINISTRADOR") // Requiere el rol "ROLE_ADMINISTRADOR"
+                        .requestMatchers("/api/backup/**").hasAuthority("ROLE_ADMINISTRADOR")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
