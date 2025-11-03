@@ -3,7 +3,6 @@ package com.proyecto.invengest.service.inventario;
 
 import com.proyecto.invengest.dto.EstadoProveedorDTO;
 import com.proyecto.invengest.entities.EstadoProveedor;
-import com.proyecto.invengest.repository.EstadoProductoRepositorio;
 import com.proyecto.invengest.repository.EstadoProveedorRepositorio;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +13,11 @@ import java.util.stream.Collectors;
 @Service
 public class EstadoProveedorServicio {
 
-    private final EstadoProductoRepositorio estadoProductoRepositorio;
+
     private final EstadoProveedorRepositorio estadoProveedorRepositorio;
 
-    public EstadoProveedorServicio(EstadoProductoRepositorio estadoProductoRepositorio, EstadoProveedorRepositorio estadoProveedorRepositorio) {
-        this.estadoProductoRepositorio = estadoProductoRepositorio;
+    public EstadoProveedorServicio(EstadoProveedorRepositorio estadoProveedorRepositorio) {
+
         this.estadoProveedorRepositorio = estadoProveedorRepositorio;
     }
 
