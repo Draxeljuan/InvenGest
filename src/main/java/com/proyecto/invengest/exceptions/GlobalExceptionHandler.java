@@ -47,6 +47,17 @@ public class GlobalExceptionHandler {
         return response;
     }
 
+    @ExceptionHandler(ProveedorNoEncontradoException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map <String, Object> proveedorNoEncontradoHandler(ProveedorNoEncontradoException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("error", "Proveedor no encontrado");
+        response.put("message", ex.getMessage());
+        response.put("status", HttpStatus.NOT_FOUND.value());
+        response.put("timestamp", System.currentTimeMillis());
+        return response;
+    }
+
     @ExceptionHandler(DetalleInvalidoException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, Object> detalleInvalidoHandler(DetalleInvalidoException ex) {

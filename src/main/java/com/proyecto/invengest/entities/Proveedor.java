@@ -17,14 +17,17 @@ import java.util.Set;
 
 @Table(name = "proveedor")
 public class Proveedor {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_proveedor", nullable = false)
     private Integer id;
 
     @NotNull
-    @Column(name = "id_estado", nullable = false)
-    private Integer idEstado;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_estado", nullable = false)
+    private EstadoProveedor idEstado;
 
     @Size(max = 150)
     @NotNull
