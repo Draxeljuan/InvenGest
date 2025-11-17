@@ -15,6 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,13 +48,30 @@ import java.util.stream.Collectors;
     }
 
     // Obtener movimiento por Id
-    public MovimientoInventarioDTO obtenerMovimiento(@PathVariable int id) {
+    public MovimientoInventarioDTO obtenerMovimiento(int id) {
         MovimientoInventario movimiento = movimientoInventarioRepositorio.findById(id)
                 .orElseThrow(() -> new MovimientoInventarioNoEncontradoException("Movimiento no encontrado con el ID: " + id + " "));
         return convertirADTO(movimiento);
     }
 
+    // Obtener movimientos del inventario de un dia en concreto
 
+    public List<MovimientoInventarioDTO> obtenerMovimientosDia(){
+        LocalDate fechaActual = LocalDate.now();
+        return movimientoInventarioRepositorio.movimientosDia(fechaActual)
+                .stream()
+                .map(this::convertirADTO)
+                .collect(Collectors.toList());
+    }
+
+    // Obtener movimientos recientes
+    public List<MovimientoInventarioDTO> obtenerMovimientoRecientes(int limite){
+        Pageable pageable = PageRequest.of(0, limite);
+        return movimientoInventarioRepositorio.ultimosMovimientos(pageable)
+                .stream()
+                .map(this::convertirADTO)
+                .collect(Collectors.toList());
+    }
 
     public void registrarMovimientoInventario(MovimientoInventarioDTO movimientoDTO) {
         MovimientoInventario movimiento = new MovimientoInventario();

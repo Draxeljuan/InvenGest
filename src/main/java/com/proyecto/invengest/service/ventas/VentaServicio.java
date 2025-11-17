@@ -3,6 +3,7 @@ package com.proyecto.invengest.service.ventas;
 
 import com.proyecto.invengest.dto.DetalleVentaDTO;
 import com.proyecto.invengest.dto.MovimientoInventarioDTO;
+import com.proyecto.invengest.dto.ProductoTopDTO;
 import com.proyecto.invengest.dto.VentaDTO;
 import com.proyecto.invengest.entities.*;
 import com.proyecto.invengest.exceptions.VentaNoEncontradaException;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,6 +55,27 @@ public class VentaServicio {
                 .collect(Collectors.toList());
     }
 
+    // Obtener ventas del dia actual
+    public List<VentaDTO> obtenerVentaDia() {
+        LocalDate fechaActual = LocalDate.now();
+
+        return ventaRepositorio.findVentaDia(fechaActual)
+                .stream()
+                .map(this::convertirADTO)
+                .collect(Collectors.toList());
+    }
+
+    // Obtener ventas de la ultima semana
+    public List<VentaDTO> obtenerVentaSemana(){
+        LocalDate fechaActual = LocalDate.now();
+        LocalDate fechaInicio = fechaActual.minusDays(7);
+
+        return ventaRepositorio.findVentasSemana(fechaInicio, fechaActual)
+                .stream()
+                .map(this::convertirADTO)
+                .collect(Collectors.toList());
+    }
+
     // Obtener ventas por Id
     public VentaDTO obtenerVenta(@PathVariable int idVenta){
 
@@ -62,6 +85,28 @@ public class VentaServicio {
 
         Venta venta  = ventaRepositorio.findVentaConDetalles(idVenta);
         return convertirADTO(venta);
+    }
+
+    // Obtener ventas top
+    public List<ProductoTopDTO> obtenerProductosMasVendidos(int limite, int dias){
+
+
+        LocalDate fechaActual = LocalDate.now();
+        LocalDate fechaInicio = fechaActual.minusDays(dias);
+
+        List<Object[]> resultados = ventaRepositorio.obtenerProductosMasVendidosDashBoard(fechaInicio, fechaActual);
+
+        return resultados
+                .stream()
+                .map( objects -> new ProductoTopDTO(
+                        (String) objects[0], // Id del producto
+                        (String) objects[1], // Nombre
+                        ((Long) objects[2]).intValue(), // cantidad ventida
+                        ((BigDecimal) objects[3]) // monto total acumulado en ventas
+                ))
+                .limit(limite)
+                .collect(Collectors.toList());
+
     }
 
     // Crear una nueva venta con detalles

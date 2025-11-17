@@ -2,6 +2,7 @@ package com.proyecto.invengest.controllers.ventas;
 
 
 
+import com.proyecto.invengest.dto.ProductoTopDTO;
 import com.proyecto.invengest.dto.VentaDTO;
 
 import com.proyecto.invengest.service.ventas.VentaServicio;
@@ -24,6 +25,19 @@ public class VentaControlador {
         this.ventaServicio = ventaServicio;
     }
 
+    // Obtener Ventas del dia actual
+    @GetMapping("/hoy")
+    public List<VentaDTO> ventasDia() { return ventaServicio.obtenerVentaDia(); }
+
+    // Obtener Ventas de la ultima semana
+    @GetMapping("/semana")
+    public List<VentaDTO> ventasSemana() { return ventaServicio.obtenerVentaSemana(); }
+
+    // Obtener top de ventas
+    @GetMapping("/top")
+    public List<ProductoTopDTO> obtenerProductoTop(@RequestParam(defaultValue = "5") int limite, @RequestParam(defaultValue = "30") int dias) {
+        return ventaServicio.obtenerProductosMasVendidos(limite, dias);
+    }
 
     // Obtener una Venta por ID
     @GetMapping("/{idVenta}")
